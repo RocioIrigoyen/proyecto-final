@@ -8,4 +8,4 @@ class Familiar(models.Model):  #HERENCIA de una clase existente, Model
     #modificado_el= models.DateTimeField()
     
     def __str__(self):
-      return f"{self.nombre}, {self.numero_pasaporte}, {self.id}"
+      return f"{self.nombre}, {self.numero_pasaporte}, {self.direccion}, {self.id}"

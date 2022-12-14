@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from ejemplo.models import Familiar
-from ejemplo.forms import Buscar # <--- NUEVO IMPORT
-from django.views import View # <-- NUEVO IMPORT 
+from ejemplo.forms import Buscar 
+from django.views import View  
 from ejemplo.forms import Buscar, FamiliarForm
+from django.views.generic import ListView, CreateView, DeleteView, UpdateView, DetailView
 
 # Create your views here.
 def index(request):
@@ -106,3 +107,22 @@ class BorrarFamiliar(View):
       familiar= Familiar.objects.all()    
       return render(request, self.template_name, {'lista_familiares': familiar})
 
+class FamiliarList(ListView):
+  model = Familiar
+
+class FamiliarCrear(CreateView):  #Lo mismo que nuestro formulario de Alta familiar, pero menos código
+  model = Familiar
+  success_url = "/panel-familia"  #atributo, a dónde querés redirigir la pantalla si hay éxito
+  fields = ["nombre", "direccion", "numero_pasaporte"] #Qué campos queremos que se muestren
+
+class FamiliarBorrar(DeleteView):
+  model = Familiar
+  success_url = "/panel-familia"
+
+class FamiliarActualizar(UpdateView):
+  model = Familiar
+  success_url = "/success_update_message"  #Este template es estático
+  fields = ["nombre", "direccion", "numero_pasaporte"] #Esto se puede variar
+
+class FamiliarDetalle(DetailView):
+  model = Familiar
