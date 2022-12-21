@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import path
 from ejemplo.views import index, saludar_a, sumar, buscar, monstrar_familiares, BuscarFamiliar, AltaFamiliar, ActualizarFamiliar, BorrarFamiliar, FamiliarList, FamiliarCrear, FamiliarBorrar, FamiliarActualizar, FamiliarDetalle
 from django.views.generic import TemplateView  #Lo importo para mostrar el "success" que e sun template estático
+from ejemplo_dos.views import (index, PostCrear, PostDetalle, PostListar, PostBorrar, 
+                              PostActualizar, UserSignup, UserLogin, UserLogout)
+from django.contrib.admin.views.decorators import staff_member_required
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,4 +38,13 @@ urlpatterns = [
     path('panel-familia/<int:pk>/actualizar', FamiliarActualizar.as_view()),
     path("success_update_message/", TemplateView.as_view(template_name = "ejemplo/success_update_message.html")),
     path('panel-familia/<int:pk>/detalle', FamiliarDetalle.as_view()),
+    path("ejemplo-dos/", index, name= "ejemplo-dos-index"),
+    path('ejemplo-dos/<int:pk>/detalle/', PostDetalle.as_view(), name="ejemplo-dos-detalle"),
+    path('ejemplo-dos/listar/', PostListar.as_view(), name="ejemplo-dos-listar"),
+    path('ejemplo-dos/crear/', staff_member_required(PostCrear.as_view()), name="ejemplo-dos-crear"),
+    path('ejemplo-dos/<int:pk>/borrar/', staff_member_required(PostBorrar.as_view()), name="ejemplo-dos-borrar"),
+    path('ejemplo-dos/<int:pk>/actualizar/', staff_member_required(PostActualizar.as_view()), name="ejemplo-dos-actualizar"),
+    path("ejemplo-dos/signup/", UserSignup.as_view(), name = "ejemplo-dos-signup"),
+    path("ejemplo-dos/login/", UserLogin.as_view(), name = "ejemplo-dos-login"),
+    path("ejemplo-dos/logout/", UserLogout.as_view(), name = "ejemplo-dos-logout"),
     ]
