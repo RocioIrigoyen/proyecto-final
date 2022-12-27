@@ -13,13 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from ejemplo.views import index, saludar_a, sumar, buscar, monstrar_familiares, BuscarFamiliar, AltaFamiliar, ActualizarFamiliar, BorrarFamiliar, FamiliarList, FamiliarCrear, FamiliarBorrar, FamiliarActualizar, FamiliarDetalle
 from django.views.generic import TemplateView  #Lo importo para mostrar el "success" que e sun template estático
 from ejemplo_dos.views import (index, PostCrear, PostDetalle, PostListar, PostBorrar, 
-                              PostActualizar, UserSignup, UserLogin, UserLogout)
+                              PostActualizar, UserSignup, UserLogin, UserLogout, AvatarActualizar, UserActualizar, MensajeCrear,MensajeListar,MensajeDetalle, MensajeBorrar)
 from django.contrib.admin.views.decorators import staff_member_required
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,4 +51,14 @@ urlpatterns = [
     path("ejemplo-dos/signup/", UserSignup.as_view(), name = "ejemplo-dos-signup"),
     path("ejemplo-dos/login/", UserLogin.as_view(), name = "ejemplo-dos-login"),
     path("ejemplo-dos/logout/", UserLogout.as_view(), name = "ejemplo-dos-logout"),
+    path("ejemplo-dos/avatares/<int:pk>/actualizar/", AvatarActualizar.as_view(), name = "ejemplo-dos-avatar-actualizar"),
+    path("ejemplo-dos/user/<int:pk>/actualizar/", UserActualizar.as_view(), name = "ejemplo-dos-user-actualizar"),
+    path("ejemplo-dos/mensajes/crear/", MensajeCrear.as_view(), name = "ejemplo-dos-mensajes-crear"),
+    path("ejemplo-dos/mensajes/<int:pk>/detalle/", MensajeDetalle.as_view(), name = "ejemplo-dos-mensajes-detalle"),
+    path("ejemplo-dos/mensajes/listar/", MensajeListar.as_view(), name = "ejemplo-dos-mensajes-listar"),
+    path('ejemplo-dos/mensajes/<int:pk>/borrar/', MensajeBorrar.as_view(), name="ejemplo-dos-mensajes-borrar"),
+    path('ejemplo-dos/about', TemplateView.as_view(template_name='ejemplo_dos/about.html'), name="ejemplo-dos-about"),
     ]
+
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
